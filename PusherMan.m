@@ -66,6 +66,7 @@ static PusherMan *_defaultCenter = nil;
 
 #pragma mark - Register for Push Notifications
 + (void)registerAppForPushNotifications {
+    
     if ([[UIApplication sharedApplication] respondsToSelector:@selector(isRegisteredForRemoteNotifications)])
     {
         // iOS 8 Notifications
@@ -82,7 +83,15 @@ static PusherMan *_defaultCenter = nil;
 
 #pragma mark - See enabled types
 + (UIRemoteNotificationType)enabledPushNotificationTypes {
-    return [[UIApplication sharedApplication] enabledRemoteNotificationTypes];
+    if ([[UIApplication sharedApplication] respondsToSelector:@selector(isRegisteredForRemoteNotifications)]) {
+        // iOS 8 Notifications
+        return [[UIApplication sharedApplication] isRegisteredForRemoteNotifications];
+    } else {
+        // iOS < 8 Notifications
+        return [[UIApplication sharedApplication] enabledRemoteNotificationTypes];
+    }
+    
+    
 }
 
 
